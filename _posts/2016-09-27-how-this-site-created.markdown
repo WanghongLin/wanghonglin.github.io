@@ -1,3 +1,5 @@
+{% include head.html %}
+
 # How this sited created?
 
 ###### Note: Don't forget to replace all the following 'username' with your username
@@ -21,6 +23,15 @@ $ jekyll new . --force
 # modify 'Gemfile' to use github pages
 $ bundle install
 ```
+
+#### Copy the remanning resources from minimal theme
+```shell
+$ bundle show minima
+# you will see an absolute path of your minima theme's location
+$ cp -rf cp -rf /var/lib/gems/2.3.0/gems/minima-2.0.0/{assets,_includes} .
+```
+
+Then add `{% raw %}{% include head.html %}{% endraw %}` to the top of markdown file.
 
 #### Do testing in your local machine
 ```shell

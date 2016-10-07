@@ -1,3 +1,5 @@
+{% include head.html %}
+
 # Python quick tutorial
 
 This is the personal python tutorial for quick reference.
