@@ -1,4 +1,9 @@
-{% include head.html %}
+---
+layout: post
+title:  "How this site created?"
+date:   2016-09-27 08:35:17 +0800
+categories: site
+---
 
 # How this sited created?
 
@@ -28,10 +33,22 @@ $ bundle install
 ```shell
 $ bundle show minima
 # you will see an absolute path of your minima theme's location
-$ cp -rf cp -rf /var/lib/gems/2.3.0/gems/minima-2.0.0/{assets,_includes} .
+$ cp -rf cp -rf /var/lib/gems/2.3.0/gems/minima-2.0.0/{assets,_includes,_layout,_sass} .
 ```
 
-Then add `{% raw %}{% include head.html %}{% endraw %}` to the top of markdown file.
+Then add following code to the top of your markdown file.
+
+```
+---
+layout: post
+title:  "How this site created?"
+date:   2016-09-27 08:35:17 +0800
+categories: jekyll update
+---
+```
+
+If you are working in bash, you can use `$ date "+%F %T %z"` to generate date description.
+
 
 #### Do testing in your local machine
 ```shell

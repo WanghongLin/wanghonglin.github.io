@@ -1,6 +1,9 @@
-{% include head.html %}
-
-# Python quick tutorial
+---
+layout: post
+title: Python quick tutorial
+date: 2016-10-06 11:03:32 +0800
+categories: language python
+---
 
 This is the personal python tutorial for quick reference.
 If you read this article by chance, you better skip or ignore it.
