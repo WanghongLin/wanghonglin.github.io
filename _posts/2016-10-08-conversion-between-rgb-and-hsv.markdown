@@ -10,13 +10,14 @@ Here is a Java re-implementation of RGB/HSV color conversion.
 In order to see the result, I made a comparision between this implementation and AWT's implementation.
 
 We can see the output result
->Our implementation
->[h = 80.0, s = 0.5, v = 0.6]
->[r = 0.5, g = 0.6, b = 0.3]
->
->AWT implementation
->[80.259735, 0.503268, 0.6]
->[r = 0.5019607843137255, g = 0.6, b = 0.30196078431372547]
+
+> Our implementation
+> [h = 80.0, s = 0.5, v = 0.6]
+> [r = 0.5, g = 0.6, b = 0.3]
+> 
+> AWT implementation
+> [80.259735, 0.503268, 0.6]
+> [r = 0.5019607843137255, g = 0.6, b = 0.30196078431372547]
 
 
 #### RGB to HSV
