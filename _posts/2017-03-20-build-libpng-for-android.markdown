@@ -6,6 +6,7 @@ categories: android
 ---
 
 ### Get the source
+
 ```sh
 $ mkdir $HOME/libpng-android
 $ cd ~/libpng-android
@@ -14,6 +15,7 @@ $ wget http://zlib.net/zlib-1.2.11.tar.gz
 ```
 
 ### Extract the source and prepare `Android.mk`, `Application.mk`
+
 ```sh
 $ mkdir jni && cd jni
 $ tar Jxvf ../libpng-1.6.29.tar.xz
@@ -22,7 +24,9 @@ $ tar zxvf ../zlib-1.2.11.tar.gz
 
 With the help of [this](https://github.com/WanghongLin/generate-android-mk/blob/master/generate_android_mk.py) python script to create `Android.mk`
 
+
 1. Create `Android.mk` for `libpng`, `jni/libpng-1.6.29/Android.mk`
+
 ```makefile
 # Auto-generated module by script
 LOCAL_PATH := $(call my-dir)
@@ -73,7 +77,9 @@ LOCAL_SRC_FILES := ./pngtest.c
 
 include $(BUILD_EXECUTABLE)
 ```
+
 2. Create `jni/zlib-1.2.11/Android.mk`
+
 ```makefile
 # Auto-generated module by script
 LOCAL_PATH := $(call my-dir)
@@ -107,6 +113,7 @@ include $(BUILD_STATIC_LIBRARY)
 ```
 
 3. And the top level script `jni/Android.mk`, `jni/Application.mk`
+
 ```makefile
 # top level Android.mk
 include $(all-subdir-makefiles)
@@ -120,10 +127,12 @@ APP_PLATFORM := android-16
 ### Other preparation for correctly build
 
 We need to create `pnglibconf.h` for `libpng` build
+
 ```sh
 $ cd ~/libpng-android/jni/libpng-1.6.29/
 $ make -f scripts/pnglibconf.mak
 ```
+
 Also, for `libpng` build, tell it to ignore zlib version checking.
 
 Comment the error preprocessing line.
@@ -134,6 +143,7 @@ Comment the error preprocessing line.
 ```
 
 ### Invoke the build and test the result
+
 ```sh
 $ cd ~/libpng-android
 $ ndk-build
