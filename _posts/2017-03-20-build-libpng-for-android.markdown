@@ -25,7 +25,7 @@ $ tar zxvf ../zlib-1.2.11.tar.gz
 With the help of [this](https://github.com/WanghongLin/generate-android-mk/blob/master/generate_android_mk.py) python script to create `Android.mk`
 
 
-1. Create `Android.mk` for `libpng`, `jni/libpng-1.6.29/Android.mk`
+* Create `Android.mk` for `libpng`, `jni/libpng-1.6.29/Android.mk`
 
 ```makefile
 # Auto-generated module by script
@@ -78,7 +78,7 @@ LOCAL_SRC_FILES := ./pngtest.c
 include $(BUILD_EXECUTABLE)
 ```
 
-2. Create `jni/zlib-1.2.11/Android.mk`
+* Create `jni/zlib-1.2.11/Android.mk`
 
 ```makefile
 # Auto-generated module by script
@@ -112,7 +112,7 @@ LOCAL_SRC_FILES := ./adler32.c \
 include $(BUILD_STATIC_LIBRARY)
 ```
 
-3. And the top level script `jni/Android.mk`, `jni/Application.mk`
+* And the top level script `jni/Android.mk`, `jni/Application.mk`
 
 ```makefile
 # top level Android.mk
