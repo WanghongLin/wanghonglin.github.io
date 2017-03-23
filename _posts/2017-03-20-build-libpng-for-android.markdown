@@ -155,3 +155,5 @@ $ adb shell
 $ cd /data/local/tmp/
 $ ./pngtest
 ```
+
+All steps above are bundled together in a single script, and can be found [here](https://raw.githubusercontent.com/WanghongLin/compile-scripts/master/compile-libpng-android.sh).
