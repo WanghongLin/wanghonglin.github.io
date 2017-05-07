@@ -59,7 +59,7 @@ QtCreator会根据`id`属性进行符号匹配，如果使用上面的qhp的关�
 
 为了在tooltips里面显示简要的帮助文档，需要在HTML帮助文档里面加入QtCreator专用的标记。
 
-1. 对于类名字的标记应该是下面的格式（我没有尝试）
+* 对于类名字的标记应该是下面的格式（我没有尝试）
 
 ```html
 <!-- $$$className -brief A simple description of this class -->
@@ -68,7 +68,7 @@ QtCreator会根据`id`属性进行符号匹配，如果使用上面的qhp的关�
 <!-- @@@className -->
 ```
 
-2. 对于函数名或者方法名，具有以下格式
+* 对于函数名或者方法名，具有以下格式
 
 ```html
 <!-- $$$function_name[overload1]$$$ -->
@@ -91,9 +91,9 @@ QtCreator会根据`id`属性进行符号匹配，如果使用上面的qhp的关�
 最后写了一个简单的[脚本](https://github.com/WanghongLin/miscellaneous/blob/master/tools/doxygen-c-api-qtcreator-fix.py)来处理上面描述的两种修改，修改qhp文件以及在HTML当中添加标记。
 
 ### 参考资料
-1. 原来早有人有这个需求，http://lists.qt-project.org/pipermail/qt-creator/2015-January/004350.html
-2. 关于QtCreator帮助文档使用特殊标记的参考，https://github.com/mmmarcos/doxygen2qtcreator/blob/master/doxygen2qtcreator.py
-3. 另一个使用Doxygen的例子，http://blog.qt.io/blog/2014/08/13/qt-weekly-17-linking-qt-classes-in-documentation-generated-with-doxygen/
-4. Qt的博客描述，http://blog.qt.io/blog/2008/06/20/introducing-doxygen2qthelp-create-qch-files-from-doxygen-finally/
-5. 介绍Doxygen使用的文章，https://www.ibm.com/developerworks/aix/library/au-learningdoxygen/?S_TACT=105AGX52&S_CMP=content
+1. [原来早有人有这个需求](http://lists.qt-project.org/pipermail/qt-creator/2015-January/004350.html)
+2. [关于QtCreator帮助文档使用特殊标记的参考](https://github.com/mmmarcos/doxygen2qtcreator/blob/master/doxygen2qtcreator.py)这个特殊标记是怎么发现的？厉害！
+3. [另一个使用Doxygen的例子](http://blog.qt.io/blog/2014/08/13/qt-weekly-17-linking-qt-classes-in-documentation-generated-with-doxygen/)
+4. [Qt的博客描述](http://blog.qt.io/blog/2008/06/20/introducing-doxygen2qthelp-create-qch-files-from-doxygen-finally/)
+5. [介绍Doxygen使用的文章](https://www.ibm.com/developerworks/aix/library/au-learningdoxygen/?S_TACT=105AGX52&S_CMP=content)
 6. [Qt Creator Documentation Gallery](https://wiki.qt.io/Qt_Creator_Documentation_Gallery) 上面可以直接下载一些帮助文档
