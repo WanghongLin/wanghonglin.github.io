@@ -45,7 +45,7 @@ old/new, opened/closed, visible/invisible, source/target, source/destination
 
 #### 命名细节
 
-* 方法（method）以及成员（field）、变量名都必须使用camelCase的写法
+* 方法（method）以及成员（field）、变量名都必须使用`camelCase`的写法
 
 对于成员（field），Android框架里面的代码里面含有大量的以`m`为前缀的命名，`mContext, mStarted, mMuxer`。
 
@@ -53,7 +53,7 @@ old/new, opened/closed, visible/invisible, source/target, source/destination
 
 * 常量必须使用大写，并且使用下划线（underscore）`_` 进行分隔
 
-比如 `ALL_CAPS`，在Android studio当中使用`const` live template 快速创建正对 Android 的常量
+比如 `ALL_CAPS`，在Android studio当中使用`const` Live Template 快速创建针对 Android 的常量
 
 * 循环下标的命名
 
