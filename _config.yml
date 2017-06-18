@@ -27,3 +27,7 @@ github_username:  jekyll
 # Build settings
 markdown: kramdown
 theme: minima
+
+# paginate
+paginate: 5
+paginate_path: "/blog/page:num/"
