@@ -33,7 +33,7 @@ $ bundle install
 ```shell
 $ bundle show minima
 # you will see an absolute path of your minima theme's location
-$ cp -rf cp -rf /var/lib/gems/2.3.0/gems/minima-2.0.0/{assets,_includes,_layout,_sass} .
+$ cp -rf /var/lib/gems/2.3.0/gems/minima-2.0.0/{assets,_includes,_layout,_sass} .
 ```
 
 Then add following code to the top of your markdown file.
