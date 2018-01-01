@@ -1,0 +1,111 @@
+---
+layout: post
+title: Unix job
+date: 2018-01-01 00:46:02 +0000
+categories: unix
+---
+
+这是一篇很老的文章，几乎不记得是何时写的了，现在把它放到这里，供未来回忆。
+
+在 Unix 系统上面，一个作业(`job`)指的是在后台运行的一个执行任务，这个执行任务可以是单个的命令，也可以是通过管道连接的多个命令。接下来文章的描述`job`和`作业`两者描述同一个东西。一个`job`通常是和特定的终端会话关联。如果不用和用户输入交互，在终端运行的单个命令或者用管道连接的命令序列可以放到后台去执行，然后在这个终端会话当中执行其它的命令或者用管道连接的命令序列。可以这么认为，作业(job)就是放到后台执行的一个或者多个进程。
+
+### 作业控制
+
+在`Linux`上默认的 bash 环境下，作业控制主要有`&`，`fg`，`bg`，`Ctrl+Z`，`jobs`等命令或者操作。下面通过结合具体例子看看它们的用法。
+
+```shell
+$ evince novel.pdf &
+# 打开一个叫 novel.pdf 的文档，放到后台，然后在这个终端会话当中继续
+# 执行其它的命令
+```
+
+```shell
+$ ping 8.8.8.8 |awk '{print $7}' 2>&1 >/dev/null &
+# ping 主机 8.8.8.8，然后通过管道传递给 awk 提取第7列，同时标准输出和错误输出
+# 都重新定向到/dev/null当中，最后把这些动作都放到后台当中，使之成为一个后台作业
+```
+
+```shell
+$ jobs
+[1]-  Running   ping 172.20.3.254 | awk '{print $4}' 2>&1 > /dev/null &
+[2]+  Running   ping 8.8.8.8 | awk '{print $7}' 2>&1 > /dev/null &
+# jobs打印当前终端会话当中的后台作业，上面在我的当前会话终端有两个后台进程
+```
+
+```shell
+$ fg
+ping 8.8.8.8 | awk '{print $7}' 2>&1 > /dev/null
+# fg把当前终端会话后台作业放到前台执行
+```
+
+`Ctrl+Z`把当前进程停止，然后放到后台当中。具体的操作结果如下。
+```shell
+[2]+  Stopped   ping 8.8.8.8 | awk '{print $7}' 2>&1 > /dev/null
+```
+然后再用`jobs`命令查看一下。两个后台作业，一个是处于`Running`状态，另一个是处于`Stopped`状态。
+
+```shell
+$ jobs
+[1]-  Running   ping 172.20.3.254 | awk '{print $4}' 2>&1 > /dev/null &
+[2]+  Stopped   ping 8.8.8.8 | awk '{print $7}' 2>&1 > /dev/null
+```
+
+```shell
+$ bg
+[2]+ ping 8.8.8.8 | awk '{print $7}' 2>&1 > /dev/null &
+# bg 把刚才用 Ctrl+Z 停止的后台作业重新恢复运行。
+# 现在使用 jobs 查看一下，两个作业又都处于了运行状态。
+$ jobs
+[1]-  Running	ping 172.20.3.254 | awk '{print $4}' 2>&1 > /dev/null &
+[2]+  Running   ping 8.8.8.8 | awk '{print $7}' 2>&1 > /dev/null &
+```
+
+作业(job)以及shell提供的作业控制(job control)目的是使每个终端会话当中操作起来更加方便，提高工作效率。`fg`，`bg`，`&`等可以使我们方便地管理作业。作业控制只会发生在有后台作业的时候，不管后台作业是处于运行还是停止状态。
+
+### 作业(job)和进程(process)的关系
+一般来讲，作业和单个进程不存在什么对应关系。作业和进程组(process group)在操作系统内部看来，可以说是等同的，进程组可能只有一个进程也可能有多个进程。对于单个命令的作业，只有一个进程。对于用管道连接的命令序列的作业，存在多个进程。对于我们刚才上面提到的两个后台作业，就是两个进程组，我们可以用命令`ps`查看，只有两个不同的进程组ID，但是有四个不同的进程ID。
+
+```shell
+$ ps -eo user,pgid,pid,command |grep "[a]wk\|[p]ing"
+mutter   26212 26212 ping 172.20.3.254
+mutter   26212 26213 awk {print $4}
+mutter   26229 26229 ping 8.8.8.8
+mutter   26229 26230 awk {print $7}
+```
+
+### 关于登录会话(login session)
+一个登录会话包括在指定终端开始会话的那个进程的所有后代进程。比如我打开 gnome-terminal，这就开始了一个新的会话，开始会话的进程是bash，也就是 fork 了一个`/bin/bash`，接下来后面执行的所有进程都是bash的子进程。我们可以用`pstree`查看这个清晰的关系，下面是截取关于gnome-terminal那一部分。
+```
+     ├─gnome-terminal─┬─bash───minicom
+     │                ├─bash───vim
+     │                ├─bash─┬─2*[awk]
+     │                │      └─2*[ping]
+     │                ├─bash───tst_01.sh───top
+     │                ├─bash───pstree
+     │                ├─gnome-pty-helpe
+     │                └─{gnome-terminal}
+```
+从上面的进程树当中可以看到，打开了5个gnome-terminal的标签，也就是有五个会话(session)，第一个会话我开启了`minicom`来连接我的开发板，第二个会话运行了vim编辑代码，第三个终端就是我上面用来做job测试的，第四个会话我运行了一个shell脚本，然后脚本里面又运行了top命令，第五个也就是我运行`pstree`用来得到上面进程树的会话。
+
+下面按点列出会话开启的一些操作
+
+* gnome-terminal 的菜单`File -> Open Terminal`以及`File -> Open Tab`都是开启了一个新的终端会话。但是不属于登录会话。如果是在virtual terminal，也就是我们通常说的tty1～tty6下面，开启每个会话都需要输入用户名和密码，则这就是登录会话。
+
+* ssh 到某个远程主机当中，这个也是开启了一个新的会话，同时是登录会话，对于 ssh 的登录会话，使用`logout`表示退出该会话，同时会给属于该会话的所有进程发送`SIGHUP`的信号，那些进程在默认处理的情况下，会终止执行。若要退出会话后，由该会话产生的某些作业继续运行，则可以在运行命令之前使用`nohup`命令前缀，表示忽略信号`SIGHUP`。
+
+一个会话可以让几个进程组同时处于活动状态，比如我上面使两个ping的进程组都是处于活动状态，但是只有一个进程组一直处于前台，和终端交互，比如接受`Ctrl+C`等命令。当一个后台作业或者进程组要访问终端时，比如我只是运行
+```shell
+$ ping 8.8.8.8 |awk '{print $7}' &
+```
+后台进程组要访问终端，打印输出信息，这时候，它会收到`SIGTTIN`或者`SIGTTOUT`信号。另外，同一个进程组的所有进程都必须属于同一个会话当中，其实从命令操作上面也很难做到把不同会话当中的几个进程放到同一个进程组当中。
+
+### 总结
+上面是我个人关于进程，作业，会话的认识，如有错误，请不啬指教。另外，本文并没有详细提到关于进程管理，作业控制以及会话管理的内容。关于这方面的认识，参阅参考内容部分。
+
+### 参考内容
+* [TTY Demystified](!http://www.linusakesson.net/programming/tty/index.php) 关于TTY方面的非常好的文章
+* [关于进程和作业的讨论](!http://www.daniweb.com/software-development/shell-scripting/threads/159920)，不过以鄙人之见似乎存在一点小错误，各位读者注意辨别取舍。
+* [Unix 进程管理以及信号](!http://www.slac.stanford.edu/BFROOT/www/Computing/Environment/Tools/Batch/exitcode.html) Unix进程管理及信号
+* [Unix 进程管理以及信号](!http://www.kingcomputerservices.com/unix_101/sending_signals.htm) ，通俗易懂的文章，非常好理解的例子
+* [IBM Developerworks介绍的让进程在后台运行的技巧](!http://www.ibm.com/developerworks/cn/linux/l-cn-nohup/)
+* [IBM Developerworks介绍的进程管理技巧](!http://www.ibm.com/developerworks/cn/aix/library/es-unix-sysadmin1.html)，主要是ps的使用
