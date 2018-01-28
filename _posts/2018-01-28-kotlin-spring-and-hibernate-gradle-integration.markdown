@@ -7,7 +7,7 @@ categories: java
 
 This article list the configurations need to do in order to create spring and hibernate project based on gralde with kotlin support.
  
- #### apply kotlin-spring and kotlin-jpa plugin
+#### apply kotlin-spring and kotlin-jpa plugin
  
  ```
  dependencies {
