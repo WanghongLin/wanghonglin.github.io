@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        img {
+            width: 100vw;
+            height: 100vh;
+        }
+    </style>
+    <script>
+        let currentIndex = 0
+        let direction = "DOWN"
+        let oldScrollY = 0
+        window.onload = function () {
+            let els = document.getElementsByTagName('img')
+
+            window.onscroll = function () {
+                if (oldScrollY - window.scrollY < 0) {
+                    direction = "DOWN"
+                } else {
+                    direction = "UP"
+                }
+                oldScrollY = window.scrollY
+            }
+            window.ontouchend = function () {
+                if (direction === "DOWN") {
+                    currentIndex++;
+                } else {
+                    currentIndex--;
+                }
+                if (currentIndex >= els.length) currentIndex = 0;
+                if (currentIndex < 0) currentIndex = els.length - 1;
+                document.getElementsByTagName("img")[currentIndex].scrollIntoView();
+            }
+        }
+    </script>
+		<title>%s</title>
+</head>
+<body>
+<div>
+	%s
+</div>
+</body>
+</html>
