@@ -7,7 +7,7 @@ import re
 import base64
 
 
-IMG_PATTERN = re.compile('img\d+\.jpe?g')
+IMG_PATTERN = re.compile('(img|幻灯片)\d+\.jpe?g', re.IGNORECASE)
 IMG_TAG = '<img src="data:image/jpeg;base64,{src}">'
 RM_PATTERN = re.compile('(img|text|thumb)\d+\.(jpe?g|html)')
 
@@ -17,8 +17,8 @@ def find_img_and_generate(folder, title, template, output):
         images = []
         for fn in sorted(os.listdir(folder)):
             if IMG_PATTERN.match(fn):
-                with open(fn, 'rb') as fp:
-                    s = base64.encodestring(fp.read())
+                with open(os.path.join(folder, fn), 'rb') as fp:
+                    s = base64.encodebytes(fp.read()).decode('ascii')
                     img = IMG_TAG.format(src=s)
                     images.append(img)
 
